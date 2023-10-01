@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { AuthEntity } from './entities/auth.entity';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('users')
 @ApiTags('users')
@@ -13,6 +15,15 @@ export class UsersController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
+
+
+  @Post('login')
+  @ApiOkResponse({ type: AuthEntity })
+  login(@Body() { email, password }: LoginDto) {
+    return this.usersService.login(email, password);
+  }
+
+
 
   @Get()
   findAll() {
